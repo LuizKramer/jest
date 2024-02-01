@@ -11,9 +11,9 @@ class MockModel {
 
     constructor() {
         // Get the MongoDB client instance from the Database singleton.
-        log.group("AuthModel.constructor");
+        log.group("Mock Model Constructor");
         this.client = Database.getInstance().getClient();
-        log.success('AuthModel class instantiated');
+        log.success('Mock Model class instantiated');
         log.groupEnd();
     }
 

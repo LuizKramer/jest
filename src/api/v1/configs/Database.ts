@@ -93,6 +93,23 @@ class Database {
     log.groupEnd();
     return this.client;
   };
-}
 
+  public async dropDatabase(database:string): Promise<void> {
+    log.group("Database.dropDatabase");
+    try {
+      const result = await this.client.db(database).dropDatabase();
+      if(result){
+        log.success('Dropped database');
+        log.groupEnd();
+      }else{
+        throw new Error('Failed to drop database');
+      }
+    } catch (error) {
+      log.error(`Error dropping database: ${error}`);
+      log.groupEnd();
+      throw error;
+    }
+  }
+
+}
 export default Database;

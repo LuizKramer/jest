@@ -12,20 +12,47 @@ beforeAll(async () => {
     log.info("Tests Started");
     log.warning(env.MONGODB, env.PORT);
     await Database.getInstance().connect();
-    
+
 
 });
 
 describe('Mock Tests', () => {
-    const route = '/mock';
-    it('should test that GET / returns "Hello World!"', async () => {
-        const res = await request(app).get(`${route}/`);
-        expect(res.status).toBe(200);
-        expect(res.body).toEqual({message: "Hello World!"});
+    const mainRoute = '/mock';
+    describe('Create Mock', () => {
+        it('should insert a mock into database', async () => {
+            const route = `${mainRoute}/create`;
+            const res = await request(app)
+                .post(route)
+                .send({
+                    "mock-test": "imma a test mock"
+                });
+            expect(res.status).toBe(201);
+        });
+    });
+    describe('Get Mock', () => {
+        it('should get a mock from database', async () => { // Corrected the syntax here
+            const route = `${mainRoute}/`;
+            const res = await request(app)
+                .get(route);
+            expect(res.status).toBe(200);
+            expect(res.body).toHaveProperty('mock-test');
+        }); // Moved the closing parenthesis to the correct position
     });
 });
 
 afterAll(async () => {
-    console.log("Tests Finished");
-    await Database.getInstance().close();
+    log.group("After All Tests");
+    try {
+        log.success("Tests Finished");
+        log.info("Dropping Collections");
+        await Database.getInstance().dropDatabase(env.MONGODB!);
+        log.success("Collections Dropped");
+    } catch (error) {
+        log.error(`Error during cleanup: ${error}`);
+    } finally {
+        log.info("Closing Connection");
+        log.success("Connection Closed");
+        await Database.getInstance().close();
+        log.groupEnd();
+    }
 }); 
