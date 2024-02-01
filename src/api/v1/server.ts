@@ -1,12 +1,11 @@
 import express, { Request, Response } from 'express';
-
+import mockRouter from './routes/mock-route';
 
 const app = express();
-const port = 3000;
 
-app.get('/', (req: Request, res: Response) => {
-    res.send('Hello World!');
-});
+
+app.use(express.json());
+app.use('/mock', mockRouter);
 
 
 export default app;

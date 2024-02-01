@@ -16,11 +16,12 @@ beforeAll(async () => {
 
 });
 
-describe('Sample Test', () => {
+describe('Mock Tests', () => {
+    const route = '/mock';
     it('should test that GET / returns "Hello World!"', async () => {
-        const res = await request(app).get('/');
+        const res = await request(app).get(`${route}/`);
         expect(res.status).toBe(200);
-        expect(res.text).toBe('Hello World!');
+        expect(res.body).toEqual({message: "Hello World!"});
     });
 });
 
