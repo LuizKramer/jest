@@ -10,32 +10,36 @@ class MockController {
         this.mockModel = new MockModel();
     }
 
-    public createMock = async (req:Request, res:Response) => {
+    public createMock = async (req: Request, res: Response) => {
+        // #swagger.tags = ['Mock']
+        // #swagger.summary = 'Some summary...'
         log.group("MockController.createMock");
-        try{
+        try {
             log.info('Creating mock');
             log.warning(req.body);
             const result = await this.mockModel.createMock(req.body);
             log.groupEnd();
             res.status(201).json(result);
-        }catch(error){
+        } catch (error) {
             log.error(`Error creating mock: ${error}`);
             log.groupEnd();
-            res.status(500).json({message: "Internal Server Error"});
+            res.status(500).json({ message: "Internal Server Error" });
         }
     }
 
-    public getMock = async (req:Request, res:Response) => {
+
+    public getMock = async (req: Request, res: Response) => {
+        // #swagger.tags = ['Mock']
         log.group("MockController.getMock");
-        try{
+        try {
             log.info('Sending response');
             log.groupEnd();
             const result = await this.mockModel.getMock();
             res.status(200).json(result);
-        }catch(error){
+        } catch (error) {
             log.error(`Error sending response: ${error}`);
             log.groupEnd();
-            res.status(500).json({message: "Internal Server Error"});
+            res.status(500).json({ message: "Internal Server Error" });
         }
     }
 }
